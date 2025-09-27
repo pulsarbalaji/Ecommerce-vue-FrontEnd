@@ -16,6 +16,15 @@
               />
             </VCol>
             <VCol cols="12" md="6">
+              <VFileInput
+                v-model="form.product_image"
+                accept="image/*"
+                label="Product Image"
+                :rules="[rules.required]"
+                required
+              />
+            </VCol>
+            <VCol cols="12" md="6">
               <VTextarea
                 v-model="form.description"
                 label="Description"

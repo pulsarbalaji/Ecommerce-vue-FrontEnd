@@ -45,6 +45,9 @@ import VerticalNavLink from "@layouts/components/VerticalNavLink.vue";
 <VerticalNavLink
  :item="{ title: 'Customer Details', icon: 'bx-receipt', to: '/customer' }"
 />
+<VerticalNavLink
+ :item="{ title: 'Contact Us Details', icon: 'bx-receipt', to: '/contactus' }"
+/>
 
 
 
