@@ -38,17 +38,6 @@ definePageMeta({ layout: 'blank' })
 <template>
   <div class="auth-wrapper">
     <div class="auth-container">
-      <!-- 👉 Top shape -->
-      <VImg
-        :src="authV1TopShape"
-        class="text-primary auth-v1-top-shape d-none d-sm-block"
-      />
-
-      <!-- 👉 Bottom shape -->
-      <VImg
-        :src="authV1BottomShape"
-        class="text-primary auth-v1-bottom-shape d-none d-sm-block"
-      />
 
       <!-- 👉 Auth Card -->
       <VCard
@@ -59,7 +48,6 @@ definePageMeta({ layout: 'blank' })
         <!-- logo -->
         <VCardItem class="justify-center">
           <NuxtLink to="/" class="app-logo">
-            <div class="d-flex" v-html="logo" />
             <h1 class="app-logo-title">Ecommerce</h1>
           </NuxtLink>
         </VCardItem>

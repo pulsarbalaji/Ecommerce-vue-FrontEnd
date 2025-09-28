@@ -39,12 +39,9 @@ definePageMeta({ layout: 'blank' })
 
 <template>
   <div class="auth-wrapper">
-    <VImg :src="authV1TopShape" class="auth-v1-top-shape d-none d-sm-block" />
-    <VImg :src="authV1BottomShape" class="auth-v1-bottom-shape d-none d-sm-block" />
 
     <VCard class="auth-card">
       <div class="text-center my-4">
-        <div v-html="logo" />
         <h1>Ecommerce</h1>
       </div>
 
