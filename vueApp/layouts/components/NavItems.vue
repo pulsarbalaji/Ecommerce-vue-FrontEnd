@@ -13,7 +13,7 @@ import VerticalNavLink from "@layouts/components/VerticalNavLink.vue";
 
     <!-- 👉 Products -->
     <VerticalNavLink
-      :item="{ title: 'Admin', icon: 'bx-group', to: '/admin' }"
+      :item="{ title: 'Admin', icon: 'bx-user', to: '/admin' }"
     />
 
     <VerticalNavLink
@@ -43,7 +43,7 @@ import VerticalNavLink from "@layouts/components/VerticalNavLink.vue";
   />
 </VerticalNavGroup>
 <VerticalNavLink
- :item="{ title: 'Customer Details', icon: 'bx-receipt', to: '/customer' }"
+ :item="{ title: 'Customer Details', icon: 'bx-group', to: '/customer' }"
 />
 <VerticalNavLink
  :item="{ title: 'Contact Us Details', icon: 'bx-receipt', to: '/contactus' }"
