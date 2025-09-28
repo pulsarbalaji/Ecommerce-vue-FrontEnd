@@ -50,9 +50,9 @@ export default defineNuxtConfig({
 
   hooks: {},
 
-  experimental: {
-    typedPages: true,
-  },
+  // experimental: {
+  //   typedPages: true,
+  // },
 
   typescript: {
     tsConfig: {

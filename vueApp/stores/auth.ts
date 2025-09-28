@@ -9,12 +9,15 @@ export const useAuthStore = defineStore('auth', () => {
   function setAuth(token: string, userData: any) {
     accessToken.value = token
     admin.value = userData
-    sessionStorage.setItem('access_token', token)
-    sessionStorage.setItem('admin', JSON.stringify(userData))
+    if (process.client) {
+      sessionStorage.setItem('access_token', token)
+      sessionStorage.setItem('admin', JSON.stringify(userData))
+    }
   }
 
   // Load from sessionStorage (on refresh)
   function loadAuth() {
+    if (!process.client) return
     const token = sessionStorage.getItem('access_token')
     const user = sessionStorage.getItem('admin')
     if (token) accessToken.value = token
@@ -25,8 +28,10 @@ export const useAuthStore = defineStore('auth', () => {
   function clearAuth() {
     accessToken.value = null
     admin.value = null
-    sessionStorage.removeItem('access_token')
-    sessionStorage.removeItem('admin')
+    if (process.client) {
+      sessionStorage.removeItem('access_token')
+      sessionStorage.removeItem('admin')
+    }
   }
 
   return { accessToken, admin, setAuth, loadAuth, clearAuth }

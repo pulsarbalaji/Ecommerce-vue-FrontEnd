@@ -74,36 +74,34 @@
 </template>
 
 <script setup>
-import { ref } from "vue"
-import { useRouter } from "vue-router"
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const { $api } = useNuxtApp()
 
-// form state
 const form = ref({
-  email: "",
-  fullName: "",
-  phone: "",
-  role: ""
+  email: '',
+  fullName: '',
+  phone: '',
+  role: ''
 })
 
-const roles = ["Admin", "Manager", "Staff"]
+const roles = ['Admin', 'Manager', 'Staff']
 
 const isSubmitting = ref(false)
 const isCancelling = ref(false)
 
-// handle add user
 const handleAddUser = async () => {
   isSubmitting.value = true
   try {
-    await $api.post("adminsdetails/", {
+    await $api.post('adminsdetails/', {
       email: form.value.email,
       full_name: form.value.fullName,
       phone: form.value.phone,
       role: form.value.role
     })
-    router.push("/admin")
+    router.push('/admin')
   } catch (err) {
     console.error(err)
   } finally {
@@ -111,11 +109,10 @@ const handleAddUser = async () => {
   }
 }
 
-// handle cancel
 const handleCancel = () => {
   isCancelling.value = true
   setTimeout(() => {
-    router.push("/admin")
+    router.push('/admin')
     isCancelling.value = false
   }, 800)
 }
@@ -127,27 +124,31 @@ const handleCancel = () => {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: #f9faff;
-  min-block-size: 60vh;
+  background-color: rgb(var(--v-theme-background));
+  color: rgb(var(--v-theme-on-background));
+  min-height: 60vh;
 }
 
 .form-card {
+  background-color: rgb(var(--v-theme-surface));
+  color: rgb(var(--v-theme-on-surface));
   padding: 24px;
   border-radius: 16px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 5%);
-  inline-size: 100%;
-  max-inline-size: 7020px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 7200px;
 }
 
 .form-title {
   font-size: 24px;
   font-weight: 600;
-  margin-block-end: 12px;
+  color: rgb(var(--v-theme-on-surface));
+  margin-bottom: 12px;
 }
 
 .action-btn {
   font-weight: 600;
-  min-inline-size: 140px;
+  min-width: 140px;
   text-transform: none;
 }
 </style>

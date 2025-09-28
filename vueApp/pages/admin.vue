@@ -28,7 +28,7 @@ const fetchUsers = async () => {
   try {
     const response = await $api.get('adminsdetails/')
     users.value = response.data.data
-    console.log("Fetched Users:", response.data)
+    console.log('Fetched Users:', response.data)
   } catch (err) {
     console.error('Error fetching users:', err)
   } finally {
@@ -100,7 +100,7 @@ const deleteUser = async () => {
       </template>
 
       <!-- Actions Column -->
-      <template v-slot:[`item.actions`]="{ item } ">
+      <template v-slot:[`item.actions`]="{ item }">
         <div class="flex justify-center gap-1">
           <VBtn icon color="primary" variant="text" size="small" @click="editUser(item)">
             <Icon icon="mdi:pencil" width="18" height="18" />
@@ -135,19 +135,22 @@ const deleteUser = async () => {
 
 <style scoped>
 .page-wrapper {
+  background-color: rgb(var(--v-theme-background));
+  color: rgb(var(--v-theme-on-background));
+  min-height: 100vh;
   padding: 24px;
-  background: #f9faff;
-  min-block-size: 100vh;
 }
 
 .page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-block-end: 16px;
+  margin-bottom: 16px;
 }
 
-h2 {
+.page-header h2 {
+  color: rgb(var(--v-theme-on-surface));
   font-weight: 600;
+  margin: 0;
 }
 </style>
