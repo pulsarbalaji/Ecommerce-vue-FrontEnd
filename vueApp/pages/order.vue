@@ -9,18 +9,6 @@ const { $api } = useNuxtApp()
 // Orders list
 const orders = ref([])
 const loading = ref(true)
-const selectedOrder = ref(null)
-const showDeleteDialog = ref(false)
-const isDeleting = ref(false)
-
-// Snackbar feedback
-const snackbar = ref({ show: false, text: '', color: 'success' })
-
-// Open delete modal
-const openDeleteDialog = (order) => {
-  selectedOrder.value = order
-  showDeleteDialog.value = true
-}
 
 // Table headers
 const headers = [
@@ -36,6 +24,7 @@ const fetchOrders = async () => {
   try {
     const response = await $api.get('orderdetails/')
     orders.value = response.data.data
+    console.log('Fetched Orders:', response.data)
   } catch (err) {
     console.error('Error fetching orders:', err)
   } finally {
@@ -60,7 +49,7 @@ const orderStatusColor = {
   returned: 'error',       // red
 }
 
-// Map payment status to UI-friendly colors
+// Map payment status to colors
 const paymentStatusColor = {
   pending: 'warning',
   success: 'success',
@@ -70,16 +59,6 @@ const paymentStatusColor = {
 </script>
 
 <template>
-  <!-- Snackbar Feedback -->
-  <VSnackbar
-    v-model="snackbar.show"
-    :color="snackbar.color"
-    timeout="3000"
-    location="top right"
-  >
-    {{ snackbar.text }}
-  </VSnackbar>
-
   <div class="page-wrapper">
     <!-- Header -->
     <div class="page-header">
@@ -95,11 +74,11 @@ const paymentStatusColor = {
       density="comfortable"
     >
       <template #loading>
-        <div class="text-center py-6">Loading Orders...</div>
+        <div class="text-center py-6">Loading orders...</div>
       </template>
 
       <template #no-data>
-        <div class="text-center py-6">No Orders found.</div>
+        <div class="text-center py-6">No orders found.</div>
       </template>
 
       <!-- Status Column -->
@@ -136,19 +115,22 @@ const paymentStatusColor = {
 
 <style scoped>
 .page-wrapper {
+  background-color: rgb(var(--v-theme-background));
+  color: rgb(var(--v-theme-on-background));
+  min-height: 100vh;
   padding: 24px;
-  background: #f9faff;
-  min-block-size: 100vh;
 }
 
 .page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-block-end: 16px;
+  margin-bottom: 16px;
 }
 
-h2 {
+.page-header h2 {
+  color: rgb(var(--v-theme-on-surface));
   font-weight: 600;
+  margin: 0;
 }
 </style>

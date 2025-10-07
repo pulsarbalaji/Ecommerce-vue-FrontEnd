@@ -4,25 +4,28 @@ export default defineNuxtRouteMiddleware(async (to) => {
   try {
     const auth = useAuthStore()
 
-    // Wait until auth is loaded from sessionStorage
+    // Load auth if not yet loaded
     if (!auth.accessToken) {
-      await new Promise<void>((resolve) => {
-        auth.loadAuth()
-        resolve()
-      })
+      auth.loadAuth()
     }
 
     const isLoggedIn = !!auth.accessToken
-    const publicRoutes = ['/login', '/forgot-password', '/reset-password']
+    const publicRoutes = ['/login', '/forgot-password']
     const path = to?.path || ''
 
+    // ✅ Allow ACME challenges
     if (path.startsWith('/.well-known')) return
 
+    // ✅ Allow reset-password with uid/token
+    if (path.startsWith('/reset-password')) return
+
+    // Not logged in → redirect to login (unless public route)
     if (!isLoggedIn && !publicRoutes.includes(path)) {
       return navigateTo('/login')
     }
 
-    if (isLoggedIn && publicRoutes.includes(path)) {
+    // Logged in → don’t allow public routes
+    if (isLoggedIn && (publicRoutes.includes(path) || path.startsWith('/reset-password'))) {
       return navigateTo('/dashboard')
     }
   } catch (err) {

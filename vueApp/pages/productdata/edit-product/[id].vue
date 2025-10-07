@@ -242,7 +242,6 @@ const handleCancel = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f9faff;
   padding: 20px;
 }
 

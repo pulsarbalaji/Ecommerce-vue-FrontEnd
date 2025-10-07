@@ -10,45 +10,6 @@ const { $api } = useNuxtApp()
 // Products list
 const products = ref([])
 const loading = ref(true)
-const selectedProduct = ref(null)
-const showDeleteDialog = ref(false)
-const isDeleting = ref(false)
-
-// Snackbar feedback
-const snackbar = ref({ show: false, text: '', color: 'success' })
-
-// Open delete modal
-const openDeleteDialog = (product) => {
-  selectedProduct.value = product
-  showDeleteDialog.value = true
-}
-
-// Confirm delete
-const confirmDelete = async () => {
-  if (!selectedProduct.value) return
-  isDeleting.value = true
-  try {
-    await $api.delete(`/product/${selectedProduct.value.id}/`)
-    products.value = products.value.filter(p => p.id !== selectedProduct.value.id)
-
-    snackbar.value = {
-      show: true,
-      text: `Product "${selectedProduct.value.product_name}" deleted successfully.`,
-      color: 'success'
-    }
-
-    showDeleteDialog.value = false
-  } catch (err) {
-    console.error('Error deleting Product:', err)
-    snackbar.value = {
-      show: true,
-      text: 'Error deleting product. Please try again.',
-      color: 'error'
-    }
-  } finally {
-    isDeleting.value = false
-  }
-}
 
 // Table headers
 const headers = [
@@ -66,6 +27,7 @@ const fetchProducts = async () => {
   try {
     const response = await $api.get('product/')
     products.value = response.data.data
+    console.log('Fetched Products:', response.data)
   } catch (err) {
     console.error('Error fetching products:', err)
   } finally {
@@ -90,36 +52,6 @@ const viewProduct = (product) => {
 </script>
 
 <template>
-  <!-- Delete Confirmation Modal -->
-  <VDialog v-model="showDeleteDialog" max-width="400">
-    <VCard>
-      <VCardTitle class="text-h6">Confirm Delete</VCardTitle>
-
-      <VCardText>
-        Are you sure you want to delete
-        <strong>{{ selectedProduct?.product_name }}</strong>?
-      </VCardText>
-
-      <VCardActions>
-        <VSpacer />
-        <VBtn text @click="showDeleteDialog = false">Cancel</VBtn>
-        <VBtn color="error" :loading="isDeleting" @click="confirmDelete">
-          Delete
-        </VBtn>
-      </VCardActions>
-    </VCard>
-  </VDialog>
-
-  <!-- Snackbar Feedback -->
-  <VSnackbar
-    v-model="snackbar.show"
-    :color="snackbar.color"
-    timeout="3000"
-    location="top right"
-  >
-    {{ snackbar.text }}
-  </VSnackbar>
-
   <div class="page-wrapper">
     <!-- Header with Add Product button -->
     <div class="page-header">
@@ -138,7 +70,7 @@ const viewProduct = (product) => {
       density="comfortable"
     >
       <template #loading>
-        <div class="text-center py-6">Loading Products...</div>
+        <div class="text-center py-6">Loading products...</div>
       </template>
 
       <template #no-data>
@@ -182,15 +114,6 @@ const viewProduct = (product) => {
           </VBtn>
           <VBtn
             icon
-            color="error"
-            variant="text"
-            size="small"
-            @click="openDeleteDialog(item)"
-          >
-            <Icon icon="mdi:delete" width="18" height="18" />
-          </VBtn>
-          <VBtn
-            icon
             color="secondary"
             variant="text"
             size="small"
@@ -206,20 +129,23 @@ const viewProduct = (product) => {
 
 <style scoped>
 .page-wrapper {
+  background-color: rgb(var(--v-theme-background));
+  color: rgb(var(--v-theme-on-background));
+  min-height: 100vh;
   padding: 24px;
-  background: #f9faff;
-  min-block-size: 100vh;
 }
 
 .page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-block-end: 16px;
+  margin-bottom: 16px;
 }
 
-h2 {
+.page-header h2 {
+  color: rgb(var(--v-theme-on-surface));
   font-weight: 600;
+  margin: 0;
 }
 
 .product-img {

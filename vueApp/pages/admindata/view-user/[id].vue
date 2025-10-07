@@ -35,7 +35,7 @@ onMounted(async () => {
         <div v-if="loading" class="py-6 text-center">Loading...</div>
 
         <div v-else-if="user">
-          <VRow>
+          <VRow dense>
             <VCol cols="12" md="6">
               <p><strong>Full Name:</strong> {{ user.full_name }}</p>
             </VCol>
@@ -69,13 +69,12 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f9faff;
   padding: 20px;
 }
 .form-card {
-  max-width: 720px;
+  max-width: 7200px;
   width: 100%;
-  padding: 24px;
+  padding: 16px;
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
 }

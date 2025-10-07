@@ -9,18 +9,6 @@ const { $api } = useNuxtApp()
 // Customers list
 const customers = ref([])
 const loading = ref(true)
-const selectedCustomer = ref(null)
-const showDeleteDialog = ref(false)
-const isDeleting = ref(false)
-
-// Snackbar feedback
-const snackbar = ref({ show: false, text: '', color: 'success' })
-
-// Open delete modal
-const openDeleteDialog = (customer) => {
-  selectedCustomer.value = customer
-  showDeleteDialog.value = true
-}
 
 // Table headers
 const headers = [
@@ -36,6 +24,7 @@ const fetchCustomers = async () => {
   try {
     const response = await $api.get('customerslist/')
     customers.value = response.data.data
+    console.log('Fetched Customers:', response.data)
   } catch (err) {
     console.error('Error fetching customers:', err)
   } finally {
@@ -52,16 +41,6 @@ const viewCustomer = (customer) => {
 </script>
 
 <template>
-  <!-- Snackbar Feedback -->
-  <VSnackbar
-    v-model="snackbar.show"
-    :color="snackbar.color"
-    timeout="3000"
-    location="top right"
-  >
-    {{ snackbar.text }}
-  </VSnackbar>
-
   <div class="page-wrapper">
     <!-- Header -->
     <div class="page-header">
@@ -81,7 +60,7 @@ const viewCustomer = (customer) => {
       </template>
 
       <template #no-data>
-        <div class="text-center py-6">No Customers found.</div>
+        <div class="text-center py-6">No customers found.</div>
       </template>
 
       <!-- Actions Column -->
@@ -104,19 +83,22 @@ const viewCustomer = (customer) => {
 
 <style scoped>
 .page-wrapper {
+  background-color: rgb(var(--v-theme-background));
+  color: rgb(var(--v-theme-on-background));
+  min-height: 100vh;
   padding: 24px;
-  background: #f9faff;
-  min-block-size: 100vh;
 }
 
 .page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-block-end: 16px;
+  margin-bottom: 16px;
 }
 
-h2 {
+.page-header h2 {
+  color: rgb(var(--v-theme-on-surface));
   font-weight: 600;
+  margin: 0;
 }
 </style>

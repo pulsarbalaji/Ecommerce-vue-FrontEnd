@@ -6,21 +6,9 @@ import { Icon } from '@iconify/vue'
 const router = useRouter()
 const { $api } = useNuxtApp()
 
-// Categories list
-const users = ref([])   // <-- this is categories, keeping same name as your code
+// Contact Us list
+const contacts = ref([])
 const loading = ref(true)
-const selectedUser = ref(null)
-const showDeleteDialog = ref(false)
-const isDeleting = ref(false)
-
-// Snackbar feedback
-const snackbar = ref({ show: false, text: '', color: 'success' })
-
-// Open delete modal
-const openDeleteDialog = (user) => {
-  selectedUser.value = user
-  showDeleteDialog.value = true
-}
 
 // Table headers
 const headers = [
@@ -30,57 +18,48 @@ const headers = [
   { title: 'Actions', key: 'actions', sortable: false },
 ]
 
-// Fetch categories from backend
-const fetchUsers = async () => {
+// Fetch contacts from backend
+const fetchContacts = async () => {
   try {
     const response = await $api.get('contactus/')
-    users.value = response.data.data
+    contacts.value = response.data.data
+    console.log('Fetched Contact Us:', response.data)
   } catch (err) {
-    console.error('Error fetching categories:', err)
+    console.error('Error fetching contact us:', err)
   } finally {
     loading.value = false
   }
 }
 
-onMounted(fetchUsers)
+onMounted(fetchContacts)
 
-const viewUser = (user) => {
-  router.push(`/contactusdata/view-contactus/${user.id}`)
+// Navigate to View Contact page
+const viewContact = (contact) => {
+  router.push(`/contactusdata/view-contactus/${contact.id}`)
 }
 </script>
 
 <template>
-
-  <!-- Snackbar Feedback -->
-  <VSnackbar
-    v-model="snackbar.show"
-    :color="snackbar.color"
-    timeout="3000"
-    location="top right"
-  >
-    {{ snackbar.text }}
-  </VSnackbar>
-
   <div class="page-wrapper">
-    <!-- Header with Add Category button -->
+    <!-- Header -->
     <div class="page-header">
       <h2>Contact Us Details</h2>
     </div>
 
-    <!-- Category Table -->
+    <!-- Contact Table -->
     <VDataTable
       :headers="headers"
-      :items="users"
+      :items="contacts"
       :loading="loading"
       class="elevation-1"
       density="comfortable"
     >
       <template #loading>
-        <div class="text-center py-6">Loading Categories...</div>
+        <div class="text-center py-6">Loading contact details...</div>
       </template>
 
       <template #no-data>
-        <div class="text-center py-6">No categories found.</div>
+        <div class="text-center py-6">No contact details found.</div>
       </template>
 
       <!-- Actions Column -->
@@ -91,7 +70,7 @@ const viewUser = (user) => {
             color="secondary"
             variant="text"
             size="small"
-            @click="viewUser(item)"
+            @click="viewContact(item)"
           >
             <Icon icon="mdi:eye" width="18" height="18" />
           </VBtn>
@@ -103,19 +82,22 @@ const viewUser = (user) => {
 
 <style scoped>
 .page-wrapper {
+  background-color: rgb(var(--v-theme-background));
+  color: rgb(var(--v-theme-on-background));
+  min-height: 100vh;
   padding: 24px;
-  background: #f9faff;
-  min-block-size: 100vh;
 }
 
 .page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-block-end: 16px;
+  margin-bottom: 16px;
 }
 
-h2 {
+.page-header h2 {
+  color: rgb(var(--v-theme-on-surface));
   font-weight: 600;
+  margin: 0;
 }
 </style>

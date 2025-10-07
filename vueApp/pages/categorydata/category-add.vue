@@ -2,11 +2,11 @@
   <div class="form-wrapper">
     <VCard class="form-card">
       <div class="text-center my-4">
-        <h2 class="form-title">Add Category Details</h2>
+        <h2 class="form-title">Add Category Details 📂</h2>
       </div>
 
       <VCardText>
-        <VForm @submit.prevent="handleAddCategories">
+        <VForm @submit.prevent="handleAddCategory">
           <VRow>
             <!-- Category Name -->
             <VCol cols="12" md="6">
@@ -21,16 +21,16 @@
             <!-- Product Image -->
             <VCol cols="12" md="6">
               <VFileInput
-                v-model="form.product_image"
+                v-model="form.category_image"
                 accept="image/*"
-                label="Product Image"
+                label="Category Image"
                 :rules="[rules.required, rules.imageType, rules.imageSize]"
                 required
               />
             </VCol>
 
             <!-- Description -->
-            <VCol cols="12" md="12">
+            <VCol cols="12">
               <VTextarea
                 v-model="form.description"
                 label="Description"
@@ -39,7 +39,7 @@
             </VCol>
           </VRow>
 
-          <!-- Action buttons -->
+          <!-- Action Buttons -->
           <VRow class="mt-6" justify="center" align="center">
             <VCol cols="auto">
               <VBtn
@@ -80,6 +80,7 @@ const router = useRouter()
 const { $api } = useNuxtApp()
 const auth = useAuthStore()
 
+// Validation rules
 const rules = reactive({
   required: v => !!v || "This field is required",
   imageType: v => {
@@ -97,20 +98,19 @@ const rules = reactive({
   },
 })
 
-
-// ✅ Form state
+// Form state
 const form = ref({
   created_by: auth.admin?.user_id,
   category_name: "",
   description: "",
-  product_image: null,
+  category_image: null,
 })
 
 const isSubmitting = ref(false)
 const isCancelling = ref(false)
 
-// ✅ Handle add category
-const handleAddCategories = async () => {
+// Add Category
+const handleAddCategory = async () => {
   isSubmitting.value = true
   try {
     const payload = new FormData()
@@ -118,18 +118,14 @@ const handleAddCategories = async () => {
     payload.append("category_name", form.value.category_name)
     payload.append("description", form.value.description)
 
-    const file = Array.isArray(form.value.product_image)
-      ? form.value.product_image[0]
-      : form.value.product_image
+    const file = Array.isArray(form.value.category_image)
+      ? form.value.category_image[0]
+      : form.value.category_image
 
-    if (file) {
-      payload.append("product_image", file)
-    }
+    if (file) payload.append("category_image", file)
 
     await $api.post("categories/", payload, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
+      headers: { "Content-Type": "multipart/form-data" },
     })
 
     router.push("/Category")
@@ -140,7 +136,7 @@ const handleAddCategories = async () => {
   }
 }
 
-// ✅ Handle cancel
+// Cancel
 const handleCancel = () => {
   isCancelling.value = true
   setTimeout(() => {
@@ -156,27 +152,31 @@ const handleCancel = () => {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: #f9faff;
-  min-block-size: 60vh;
+  background-color: rgb(var(--v-theme-background));
+  color: rgb(var(--v-theme-on-background));
+  min-height: 60vh;
 }
 
 .form-card {
+  background-color: rgb(var(--v-theme-surface));
+  color: rgb(var(--v-theme-on-surface));
   padding: 24px;
   border-radius: 16px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 5%);
-  inline-size: 100%;
-  max-inline-size: 720px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 720px;
 }
 
 .form-title {
   font-size: 24px;
   font-weight: 600;
-  margin-block-end: 12px;
+  color: rgb(var(--v-theme-on-surface));
+  margin-bottom: 12px;
 }
 
 .action-btn {
   font-weight: 600;
-  min-inline-size: 140px;
+  min-width: 140px;
   text-transform: none;
 }
 </style>

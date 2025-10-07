@@ -64,14 +64,14 @@
               />
             </VCol>
 
-             <!-- Description -->
-            <VCol cols="12" md="6">
+            <!-- Description -->
+            <VCol cols="12" md="12">
               <VTextarea
                 v-model="form.product_description"
                 label="Description"
+                rows="3"
               />
             </VCol>
-
           </VRow>
 
           <!-- Action buttons -->
@@ -160,14 +160,14 @@ const handleAddProduct = async () => {
 
   isSubmitting.value = true
   try {
-    // handle file upload properly with FormData
     const payload = new FormData()
-    payload.append("created_by", auth.admin?.user_id,)
+    payload.append("created_by", auth.admin?.user_id)
     payload.append("product_name", form.value.product_name)
     payload.append("product_description", form.value.product_description || "")
-    payload.append("category", form.value.category) // only ID goes here
+    payload.append("category", form.value.category)
     payload.append("price", form.value.price)
     payload.append("stock_quantity", form.value.stock_quantity)
+    payload.append("is_available", true)
     if (form.value.product_image) {
       payload.append("product_image", form.value.product_image)
     }
@@ -200,8 +200,7 @@ const handleCancel = () => {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: #f9faff;
-  min-block-size: 60vh;
+  min-block-size: 60vh; /* removed bg */
 }
 
 .form-card {
@@ -209,7 +208,7 @@ const handleCancel = () => {
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 5%);
   inline-size: 100%;
-  max-inline-size: 7020px;
+  max-inline-size: 720px;
 }
 
 .form-title {
