@@ -257,12 +257,10 @@ const totalAmount = computed(() => {
 }
 
 .items-table th {
-  background-color: #f0f0f0;
   font-weight: 600;
 }
 
 .items-table tfoot th {
-  background-color: #fafafa;
   text-align: right;
 }
 </style>

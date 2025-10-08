@@ -38,6 +38,9 @@ onMounted(fetchOrders)
 const viewOrder = (order) => {
   router.push(`/orderdetails/view-order/${order.id}`)
 }
+const updateStatus = (order) => {
+  router.push(`/orderdetails/update-status/${order.id}`)
+}
 
 // Map order status to colors
 const orderStatusColor = {
@@ -106,6 +109,15 @@ const paymentStatusColor = {
             @click="viewOrder(item)"
           >
             <Icon icon="mdi:eye" width="18" height="18" />
+          </VBtn>
+           <VBtn
+            icon
+            color="secondary"
+            variant="text"
+            size="small"
+            @click="updateStatus(item)"
+          >
+            <Icon icon="mdi:reload" width="20" height="20" />
           </VBtn>
         </div>
       </template>
