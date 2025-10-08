@@ -1,5 +1,29 @@
-<script setup>
+<script setup lang="ts">
 import avatar1 from '@images/avatars/avatar-1.png'
+import { useAuthStore } from '@/stores/auth'
+
+const auth = useAuthStore()
+const { $api } = useNuxtApp()
+const router = useRouter()
+
+const handleLogout = async () => {
+  try {
+    // Send refresh token to backend for blacklisting
+    if (auth.refreshToken) {
+      await $api.post('/logout/', { refresh: auth.refreshToken })
+    }
+
+    // Clear session
+    auth.clearAuth()
+
+    // Redirect to login
+    router.push('/login')
+  } catch (err) {
+    console.error('Logout failed:', err)
+    auth.clearAuth()
+    router.push('/login')
+  }
+}
 </script>
 
 <template>
@@ -11,77 +35,44 @@ import avatar1 from '@images/avatars/avatar-1.png'
     color="success"
     bordered
   >
-    <VAvatar
-      class="cursor-pointer"
-      color="primary"
-      variant="tonal"
-    >
+    <VAvatar class="cursor-pointer" color="primary" variant="tonal">
       <VImg :src="avatar1" />
 
-      <!-- SECTION Menu -->
-      <VMenu
-        activator="parent"
-        width="230"
-        location="bottom end"
-        offset="14px"
-      >
+      <VMenu activator="parent" width="230" location="bottom end" offset="14px">
         <VList>
-          <!-- 👉 User Avatar & Name -->
           <VListItem>
             <template #prepend>
-              <VListItemAction start>
-                <VBadge
-                  dot
-                  location="bottom right"
-                  offset-x="3"
-                  offset-y="3"
-                  color="success"
-                >
-                  <VAvatar
-                    color="primary"
-                    variant="tonal"
-                  >
-                    <VImg :src="avatar1" />
-                  </VAvatar>
-                </VBadge>
-              </VListItemAction>
+              <VAvatar color="primary" variant="tonal">
+                <VImg :src="avatar1" />
+              </VAvatar>
             </template>
-
             <VListItemTitle class="font-weight-semibold">
-              John Doe
+              {{ auth.admin?.name || 'Admin' }}
             </VListItemTitle>
-            <VListItemSubtitle>Admin</VListItemSubtitle>
+            <VListItemSubtitle>
+              {{ auth.admin?.role || 'User' }}
+            </VListItemSubtitle>
           </VListItem>
+
           <VDivider class="my-2" />
 
           <!-- 👉 Profile -->
           <VListItem link>
             <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="bx-user"
-                size="22"
-              />
+              <VIcon class="me-2" icon="bx-user" size="22" />
             </template>
-
             <VListItemTitle>Profile</VListItemTitle>
           </VListItem>
-       
-          <!-- 👉 Logout -->
-          <VListItem to="/login">
-            <template #prepend>
-              <VIcon
-                class="me-2"
-                icon="bx-log-out"
-                size="22"
-              />
-            </template>
 
+          <!-- 👉 Logout -->
+          <VListItem @click="handleLogout">
+            <template #prepend>
+              <VIcon class="me-2" icon="bx-log-out" size="22" />
+            </template>
             <VListItemTitle>Logout</VListItemTitle>
           </VListItem>
         </VList>
       </VMenu>
-      <!-- !SECTION -->
     </VAvatar>
   </VBadge>
 </template>

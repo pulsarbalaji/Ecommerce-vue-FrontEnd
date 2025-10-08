@@ -111,7 +111,7 @@ const totalAmount = computed(() => {
         <div v-if="loading" class="py-6 text-center">Loading...</div>
 
         <div v-else-if="order">
-          <VRow>
+          <VRow dense>
             <VCol cols="12" md="6">
               <p><strong>Order Number:</strong> {{ order.order_number }}</p>
             </VCol>
@@ -222,8 +222,7 @@ const totalAmount = computed(() => {
 
 <style scoped>
 .form-wrapper {
-  padding: 24px;
-  background: #f9faff;
+  padding: 16px;
   min-block-size: 100vh;
 }
 
