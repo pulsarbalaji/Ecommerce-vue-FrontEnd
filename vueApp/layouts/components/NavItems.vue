@@ -26,10 +26,10 @@ import VerticalNavLink from "@layouts/components/VerticalNavLink.vue";
   />
 
   <!-- Add Stock -->
-  <VerticalNavLink
-    :item="{ title: 'Add Stock', icon: 'bx-plus-circle',  }"
-  />
 </VerticalNavGroup>
+<VerticalNavLink
+  :item="{ title: 'Offers', icon: 'bx-purchase-tag', to: '/offer'  }"
+/>
 
 <VerticalNavGroup :item="{ title: 'Order', icon: 'bx-cart' }">
   <!-- Order Details -->
